@@ -5,6 +5,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
+
 def upload_files(directory_path, folder_id):
     creds = None
 
@@ -25,8 +26,12 @@ def upload_files(directory_path, folder_id):
 
     drive_service = build('drive', 'v3', credentials=creds)
 
+    print(f"Directory Path: {directory_path}")
+
     for file_name in os.listdir(directory_path):
         file_path = os.path.join(directory_path, file_name)
+        print(f"Processing file: {file_path}")
+
         if os.path.isfile(file_path) and (file_name.endswith('.pdf') or file_name.endswith('.txt')):
             file_metadata = {
                 'name': file_name,
