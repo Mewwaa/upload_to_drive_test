@@ -20,7 +20,7 @@ def upload_file(file_path, folder_id):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', ['https://www.googleapis.com/auth/drive'])
+                '.github/workflows/client_secret_152312650973-s0vra8sl1uh2b19gvkickc26nm2ng9lg.apps.googleusercontent.com.json', ['https://www.googleapis.com/auth/drive'])
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
