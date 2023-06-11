@@ -5,7 +5,6 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
-
 def upload_files(directory_path, folder_id):
     creds = None
 
