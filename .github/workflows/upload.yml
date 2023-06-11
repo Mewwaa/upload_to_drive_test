@@ -25,5 +25,5 @@ jobs:
     - name: Upload files to Google Drive
       run: |
         cd files
-        python upload_to_drive.py ./.github/workflows/client_secret_152312650973-s0vra8sl1uh2b19gvkickc26nm2ng9lg.apps.googleusercontent.com.json
+        python upload_to_drive.py
 
