@@ -24,6 +24,6 @@ jobs:
 
     - name: Upload files to Google Drive
       run: |
-        cd files
+
         python upload_to_drive.py
 
