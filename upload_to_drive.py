@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-def upload_file(file_path, folder_id):
+def upload_file(file_path, 10wd3StRU5zWgARvINrG9Amu09h9L_AhD):
     creds = None
 
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -32,7 +32,7 @@ def upload_file(file_path, folder_id):
 
     file_metadata = {
         'name': file_name,
-        'parents': [folder_id]
+        'parents': [10wd3StRU5zWgARvINrG9Amu09h9L_AhD]
     }
 
     media = MediaFileUpload(file_path, resumable=True)
@@ -46,4 +46,4 @@ def upload_file(file_path, folder_id):
     print(f'File ID: {file.get("id")}')
 
 if __name__ == '__main__':
-    upload_file('path_to_file.pdf', 'folder_id')
+    upload_file('path_to_file.pdf', '10wd3StRU5zWgARvINrG9Amu09h9L_AhD')
