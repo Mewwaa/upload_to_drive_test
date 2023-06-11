@@ -3,8 +3,9 @@ import pickle
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from googleapiclient.http import MediaFileUpload
 
-def upload_file(file_path, folder_id):
+def upload_files(directory_path, folder_id):
     creds = None
 
     if os.path.exists('token.pickle'):
@@ -24,22 +25,25 @@ def upload_file(file_path, folder_id):
 
     drive_service = build('drive', 'v3', credentials=creds)
 
-    file_name = os.path.basename(file_path)
+    for file_name in os.listdir(directory_path):
+        file_path = os.path.join(directory_path, file_name)
+        if os.path.isfile(file_path) and (file_name.endswith('.pdf') or file_name.endswith('.txt')):
+            file_metadata = {
+                'name': file_name,
+                'parents': [folder_id]
+            }
 
-    file_metadata = {
-        'name': file_name,
-        'parents': [folder_id]
-    }
+            media = MediaFileUpload(file_path, resumable=True)
 
-    media = MediaFileUpload(file_path, resumable=True)
+            file = drive_service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id'
+            ).execute()
 
-    file = drive_service.files().create(
-        body=file_metadata,
-        media_body=media,
-        fields='id'
-    ).execute()
-
-    print(f'File ID: {file.get("id")}')
+            print(f'Uploaded: {file_name} (File ID: {file.get("id")})')
 
 if __name__ == '__main__':
-    upload_file('path_to_file.pdf', '10wd3StRU5zWgARvINrG9Amu09h9L_AhD')
+    directory_path = 'path_to_directory'
+    folder_id = '10wd3StRU5zWgARvINrG9Amu09h9L_AhD'
+    upload_files(directory_path, folder_id)
