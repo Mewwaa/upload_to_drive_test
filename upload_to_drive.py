@@ -45,6 +45,6 @@ def upload_files(directory_path, folder_id):
             print(f'Uploaded: {file_name} (File ID: {file.get("id")})')
 
 if __name__ == '__main__':
-    directory_path = 'files'
+    directory_path = ''
     folder_id = '10wd3StRU5zWgARvINrG9Amu09h9L_AhD'
     upload_files(directory_path, folder_id)
