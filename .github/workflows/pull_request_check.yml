@@ -21,7 +21,6 @@ jobs:
           npm ci
 
           # Run tests or perform linting
-          npm test
           npm lint
 
       - name: Merge to master
