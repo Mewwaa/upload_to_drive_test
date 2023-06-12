@@ -1,6 +1,10 @@
 name: Pull Request Check
 
 on:
+  push:
+      branches:
+        - 'ewa/*'
+      
   pull_request:
     types:
       - opened
@@ -12,18 +16,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: git checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.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 }}
 
-      - name: Validate PR
-        run: |
-          npm install
-          # Run tests or perform linting
-          npm run lint
+      # https://github.com/marketplace/actions/github-pull-request-action
+      - name: create pull request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.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 }}
+          destination_branch: ${{ github.event.repository.default_branch }}
+          pr_title: "[Automated] Merge ${{ github.ref_name }} into ${{ github.event.repository.default_branch }}"
+          pr_body: "Automated Pull Request"
+          pr_reviewer: "mewwaa"
+          pr_assignee: "mewwaa"
 
-      - name: Merge to default branch
-        if: github.event.pull_request.merged == true
-        run: |
-          # Merge the PR to the default branch (e.g., main or master)
-          git checkout ${{ github.event.repository.default_branch }}
-          git merge ${{ github.event.pull_request.head.ref }}
+      # https://github.com/marketplace/actions/enable-pull-request-automerge
+      - name: enable automerge
+        if: steps.open-pr.outputs.pr_number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.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 }}
+          pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
+          merge-method: merge
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Validate PR
+#         run: |
+#           npm install
+#           # Run tests or perform linting
+#           npm run lint
+
+#       - name: Merge to default branch
+#         if: github.event.pull_request.merged == true
+#         run: |
+#           # Merge the PR to the default branch (e.g., main or master)
+#           git checkout ${{ github.event.repository.default_branch }}
+#           git merge ${{ github.event.pull_request.head.ref }}
