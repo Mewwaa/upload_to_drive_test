@@ -17,11 +17,12 @@ jobs:
 
       - name: Validate PR
         run: |
+          npm install -g npm@latest
           # Install dependencies
-          npm@5 ci
+          npm ci
 
           # Run tests or perform linting
-          npm@5 lint
+          npm lint
 
       - name: Merge to master
         if: github.event.pull_request.merged == true
