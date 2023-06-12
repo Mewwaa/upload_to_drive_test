@@ -18,14 +18,12 @@ jobs:
       - name: Validate PR
         run: |
           npm install
-          # Install dependencies
-
           # Run tests or perform linting
           npm run lint
 
-      - name: Merge to master
+      - name: Merge to default branch
         if: github.event.pull_request.merged == true
         run: |
-          # Merge the PR to the master branch
-          git checkout main
+          # Merge the PR to the default branch (e.g., main or master)
+          git checkout ${{ github.event.repository.default_branch }}
           git merge ${{ github.event.pull_request.head.ref }}
