@@ -59,7 +59,7 @@ jobs:
                     name: automerge
                     uses: "pascalgn/automerge-action@v0.15.6"
                     env:
-                      GITHUB_TOKEN: "${{ secrets.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 }}"
+                      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
 #       - name: Merge to default branch
 #         if: github.event.pull_request.merged == true
