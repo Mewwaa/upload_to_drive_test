@@ -42,8 +42,9 @@ jobs:
 #           token: ${{ secrets.GITHUB_TOKEN }}
 #           pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
 #           merge-method: merge
-      - name: Merge pull requests (automerge-action)
-        uses: pascalgn/automerge-action@v0.15.6
+#       - name: Merge pull requests (automerge-action)
+#         uses: pascalgn/automerge-action@v0.15.6
+# 
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -54,12 +55,12 @@ jobs:
           npm install
           npm run lint
           
-            automerge:
-                  - id: automerge
-                    name: automerge
-                    uses: "pascalgn/automerge-action@v0.15.6"
-                    env:
-                      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+#           automerge:
+#                   - id: automerge
+#                     name: automerge
+#                     uses: "pascalgn/automerge-action@v0.15.6"
+#                     env:
+#                       GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
 #       - name: Merge to default branch
 #         if: github.event.pull_request.merged == true
