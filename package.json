@@ -1,0 +1,19 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "My Project",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "eslint": "^7.32.0"
+  },
+  "dependencies": {
+    // Your project dependencies here
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
