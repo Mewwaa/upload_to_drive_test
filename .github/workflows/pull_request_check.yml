@@ -27,5 +27,5 @@ jobs:
         if: github.event.pull_request.merged == true
         run: |
           # Merge the PR to the master branch
-          git checkout master
+          git checkout main
           git merge ${{ github.event.pull_request.head.ref }}
