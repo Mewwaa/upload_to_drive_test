@@ -1,0 +1,32 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+
+jobs:
+  pr_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Validate PR
+        run: |
+          # Add your validation script here
+          # For example, you can run tests or perform linting
+          echo "Running tests..."
+          npm test
+
+      - name: Merge to master
+        if: github.event.pull_request.merged == true
+        run: |
+          # Add your merge script here
+          # For example, you can merge the PR to the master branch
+          echo "Merging to master..."
+          git checkout master
+          git merge ${{ github.event.pull_request.head.ref }}
