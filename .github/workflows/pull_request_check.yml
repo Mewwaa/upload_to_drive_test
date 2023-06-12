@@ -1,5 +1,6 @@
 name: Pull Request Check
 
+
 on:
 #   push:
 #       branches:
@@ -41,10 +42,14 @@ jobs:
 #           token: ${{ secrets.GITHUB_TOKEN }}
 #           pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
 #           merge-method: merge
+      - name: Merge pull requests (automerge-action)
+        uses: pascalgn/automerge-action@v0.15.6
+
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Validate PR
+      
         run: |
           npm install
           npm run lint
