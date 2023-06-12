@@ -21,7 +21,7 @@ jobs:
           # Install dependencies
 
           # Run tests or perform linting
-          npm lint
+          npm run lint
 
       - name: Merge to master
         if: github.event.pull_request.merged == true
