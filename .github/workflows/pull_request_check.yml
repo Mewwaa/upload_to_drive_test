@@ -17,9 +17,8 @@ jobs:
 
       - name: Validate PR
         run: |
-          npm install -g npm@latest
+          npm install
           # Install dependencies
-          npm ci
 
           # Run tests or perform linting
           npm lint
