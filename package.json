@@ -4,7 +4,7 @@
   "description": "My Project",
   "scripts": {
     "test": "jest",
-    "lint": "eslint src"
+    "lint": "eslint"
   },
   "devDependencies": {
     "jest": "^27.0.6",
