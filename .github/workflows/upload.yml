@@ -25,3 +25,31 @@
 #     - name: Upload files to Google Drive
 #       run: |
 #         python3 upload_to_drive.py
+
+
+name: Upload to Google Drive
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        run: python upload_to_drive.py
+
