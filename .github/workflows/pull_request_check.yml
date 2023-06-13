@@ -105,7 +105,6 @@
 
 
 
-
 name: Pylint
 
 on:
@@ -142,7 +141,7 @@ jobs:
     - name: Run Pylint
       id: run_pylint
       run: |
-        cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit
+        cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit --output-format=parseable
         pylint_exit_code=$?
         echo "::set-output name=pylint_exit_code::$pylint_exit_code"
         
@@ -152,4 +151,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         args: --merge
+
+
 
