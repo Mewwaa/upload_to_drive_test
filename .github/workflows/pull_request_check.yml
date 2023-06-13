@@ -145,7 +145,7 @@ jobs:
         
     - name: Merge pull request
       if: ${{ steps.build.outputs.pylint_exit_code == 0 }}
-      uses: repo-sync/pull-request@v3
+      uses: repo-sync/pull-request@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         merge_method: 'merge'
