@@ -122,10 +122,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.9
         
@@ -148,7 +148,7 @@ jobs:
         
     - name: Merge pull request
       if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 }}
-      uses: repo-sync/pull-request@v3
+      uses: repo-sync/pull-request@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         merge_method: 'merge'
