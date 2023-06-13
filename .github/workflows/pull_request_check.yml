@@ -1,104 +1,148 @@
-# name: Pull Request Check
+# # name: Pull Request Check
+
+
+# # on:
+# # #   push:
+# # #       branches:
+# # #         - 'ewa/*'
+      
+# #   pull_request:
+# #     types:
+# #       - opened
+# #       - synchronize
+# #       - closed
+
+# # jobs:
+# #   pr_check:
+# #     runs-on: ubuntu-latest
+
+# #     steps:
+# # #       - name: git checkout
+# # #         uses: actions/checkout@v3
+# # #         with:
+# # #           token: ${{ secrets.GITHUB_TOKEN }}
+
+# # #       # https://github.com/marketplace/actions/github-pull-request-action
+# # #       - name: create pull request
+# # #         id: open-pr
+# # #         uses: repo-sync/pull-request@v2
+# # #         with:
+# # #           github_token: ${{ secrets.GITHUB_TOKEN}}
+# # #           destination_branch: ${{ github.event.repository.default_branch }}
+# # #           pr_title: "[Automated] Merge ${{ github.ref_name }} into ${{ github.event.repository.default_branch }}"
+# # #           pr_body: "Automated Pull Request"
+# # #           pr_reviewer: "mewwaa"
+# # #           pr_assignee: "mewwaa"
+
+# # #       # https://github.com/marketplace/actions/enable-pull-request-automerge
+# # #       - name: enable automerge
+# # #         if: steps.open-pr.outputs.pr_number != ''
+# # #         uses: peter-evans/enable-pull-request-automerge@v2
+# # #         with:
+# # #           token: ${{ secrets.GITHUB_TOKEN }}
+# # #           pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
+# # #           merge-method: merge
+# # #       - name: Merge pull requests (automerge-action)
+# # #         uses: pascalgn/automerge-action@v0.15.6
+# # # 
+
+# #       - name: Checkout code
+# #         uses: actions/checkout@v3
+
+# #       - name: Validate PR
+      
+# #         run: |
+# #           npm install
+# #           npm run lint
+          
+# # #           automerge:
+# # #                   - id: automerge
+# # #                     name: automerge
+# # #                     uses: "pascalgn/automerge-action@v0.15.6"
+# # #                     env:
+# # #                       GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+# # #       - name: Merge to default branch
+# # #         if: github.event.pull_request.merged == true
+# # #         run: |
+# # #           # Merge the PR to the default branch (e.g., main or master)
+# # #           git checkout ${{ github.event.repository.default_branch }}
+# # #           git merge ${{ github.event.pull_request.head.ref }}
+
+
+
+# name: Lint
+
 
 
 # on:
-# #   push:
-# #       branches:
-# #         - 'ewa/*'
-      
-#   pull_request:
-#     types:
-#       - opened
-#       - synchronize
-#       - closed
+#   push:
+#     paths:
+#       - '*.py'
 
 # jobs:
-#   pr_check:
+#   flake8_py3:
 #     runs-on: ubuntu-latest
-
 #     steps:
-# #       - name: git checkout
-# #         uses: actions/checkout@v3
-# #         with:
-# #           token: ${{ secrets.GITHUB_TOKEN }}
-
-# #       # https://github.com/marketplace/actions/github-pull-request-action
-# #       - name: create pull request
-# #         id: open-pr
-# #         uses: repo-sync/pull-request@v2
-# #         with:
-# #           github_token: ${{ secrets.GITHUB_TOKEN}}
-# #           destination_branch: ${{ github.event.repository.default_branch }}
-# #           pr_title: "[Automated] Merge ${{ github.ref_name }} into ${{ github.event.repository.default_branch }}"
-# #           pr_body: "Automated Pull Request"
-# #           pr_reviewer: "mewwaa"
-# #           pr_assignee: "mewwaa"
-
-# #       # https://github.com/marketplace/actions/enable-pull-request-automerge
-# #       - name: enable automerge
-# #         if: steps.open-pr.outputs.pr_number != ''
-# #         uses: peter-evans/enable-pull-request-automerge@v2
-# #         with:
-# #           token: ${{ secrets.GITHUB_TOKEN }}
-# #           pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
-# #           merge-method: merge
-# #       - name: Merge pull requests (automerge-action)
-# #         uses: pascalgn/automerge-action@v0.15.6
-# # 
-
-#       - name: Checkout code
-#         uses: actions/checkout@v3
-
-#       - name: Validate PR
-      
-#         run: |
-#           npm install
-#           npm run lint
-          
-# #           automerge:
-# #                   - id: automerge
-# #                     name: automerge
-# #                     uses: "pascalgn/automerge-action@v0.15.6"
-# #                     env:
-# #                       GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-# #       - name: Merge to default branch
-# #         if: github.event.pull_request.merged == true
-# #         run: |
-# #           # Merge the PR to the default branch (e.g., main or master)
-# #           git checkout ${{ github.event.repository.default_branch }}
-# #           git merge ${{ github.event.pull_request.head.ref }}
+#       - name: Flake8 action
+#         uses: suo/flake8-github-action@v1
+        
+#       - name: Setup Python
+#         uses: actions/setup-python@v1
+#         with:
+#           python-version: 3.7.4
+#           architecture: x64
+#       - name: Checkout PyTorch
+#         uses: actions/checkout@master
+#       - name: Install flake8
+#         run: pip install flake8
+#       - name: Run flake8
+#         uses: suo/flake8-github-action@releases/v1
+#         with:
+#           checkName: 'flake8_py3'   # NOTE: this needs to be the same as the job name
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
-name: Lint
-
-
+name: Pylint
 
 on:
-  push:
-    paths:
-      - '*.py'
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  flake8_py3:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Flake8 action
-        uses: suo/flake8-github-action@v1
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
         
-      - name: Setup Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7.4
-          architecture: x64
-      - name: Checkout PyTorch
-        uses: actions/checkout@master
-      - name: Install flake8
-        run: pip install flake8
-      - name: Run flake8
-        uses: suo/flake8-github-action@releases/v1
-        with:
-          checkName: 'flake8_py3'   # NOTE: this needs to be the same as the job name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+        
+    - name: Find Python files
+      id: find_files
+      run: |
+        find . -type f -name '*.py' -not -path './.git/*' -not -path './.github/*' > files.txt
+        
+    - name: Run Pylint
+      run: |
+        cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit
+        pylint_exit_code=$?
+        
+    - name: Merge pull request
+      if: ${{ steps.build.outputs.pylint_exit_code == 0 }}
+      uses: repo-sync/pull-request@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        merge_method: 'merge'
