@@ -105,6 +105,7 @@
 
 
 
+
 name: Pylint
 
 on:
@@ -139,13 +140,16 @@ jobs:
         find . -type f -name '*.py' -not -path './.git/*' -not -path './.github/*' > files.txt
         
     - name: Run Pylint
+      id: run_pylint
       run: |
         cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit
         pylint_exit_code=$?
+        echo "::set-output name=pylint_exit_code::$pylint_exit_code"
         
     - name: Merge pull request
-      if: ${{ steps.build.outputs.pylint_exit_code == 0 }}
+      if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 }}
       uses: repo-sync/pull-request@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         merge_method: 'merge'
+
