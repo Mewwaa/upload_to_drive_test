@@ -56,6 +56,9 @@ on:
       review:
         description: Review ID
         required: false
+      token:
+        description: Github token
+        required: true
 
 jobs:
   automerge:
@@ -63,10 +66,10 @@ jobs:
     steps:
       - uses: reitermarkus/automerge@v2
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
-          merge-method: rebase
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: merge
           do-not-merge-labels: never-merge
           required-labels: automerge
           pull-request: ${{ github.event.inputs.pull-request }}
           review: ${{ github.event.inputs.review }}
-          dry-run: true
+
