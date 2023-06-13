@@ -20,8 +20,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+        pip3 install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
     - name: Upload files to Google Drive
       run: |
-        python upload_to_drive.py
+        python3 upload_to_drive.py
