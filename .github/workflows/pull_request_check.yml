@@ -111,7 +111,6 @@ name: Pylint
 on:
   pull_request:
     branches:
-      - main
       - ewa
       - test
       - test2
@@ -147,7 +146,7 @@ jobs:
         echo "::set-output name=pylint_exit_code::$pylint_exit_code"
         
     - name: Merge pull request
-      if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 }}
+      if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 && github.event.pull_request.base.ref == 'main' }}
       uses: repo-sync/pull-request@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
