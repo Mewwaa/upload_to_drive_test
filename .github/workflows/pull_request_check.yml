@@ -111,6 +111,7 @@ name: Pylint
 on:
   pull_request:
     branches:
+      - main
       - ewa
       - test
       - test2
