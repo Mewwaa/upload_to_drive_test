@@ -148,18 +148,74 @@
 #         print("Invalid file extension. Only .txt and .pdf files are supported.")
 
 
+# import requests
+# import json
+# import os
+
+# # Get access token directly from the provided value
+# def getToken():
+#     return 'ya29.a0AWY7CknIY0CW-fPmmyb6VlbAFNfsMwvQxUdi730Ql_d-8dXTMvS9YvygGkLc8JD8uG6P2uCv4zBKvJFg6xUdcbQ9ht75SfWRDDaCBj-2zLQsSytoTm7txN-JLvOeCLoTRFnS4jkCUsybUekPDp2laYEZEJ-eaCgYKATkSARASFQG1tDrpAIhHZ488E407Hvzjs9b1dQ0163'
+
+# # Upload a single file to Google Drive using access token
+# def uploadFile(file_path):
+#     TOKEN_KEY = getToken()
+#     headers = {"Authorization": "Bearer " + TOKEN_KEY}
+    
+#     file_name = os.path.basename(file_path)
+#     para = {
+#         "name": file_name,  # File name to be uploaded
+#         "parents": ["10wd3StRU5zWgARvINrG9Amu09h9L_AhD"]  # Folder ID where files should be uploaded
+#     }
+#     files = {
+#         'data': ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
+#         'file': open(file_path, "rb")
+#     }
+
+#     upload = requests.post(
+#         "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+#         headers=headers,
+#         files=files
+#     )
+#     print(upload.text)
+
+# # Upload only the files with .txt and .pdf extensions from the root directory of the repository
+# def uploadAllFiles():
+#     root_dir = os.getcwd()  # Get the current working directory (root directory of the repository)
+
+#     for file_name in os.listdir(root_dir):
+#         file_path = os.path.join(root_dir, file_name)
+#         if os.path.isfile(file_path):
+#             file_extension = os.path.splitext(file_path)[1]
+#             if file_extension == ".txt" or file_extension == ".pdf":
+#                 uploadFile(file_path)
+
+# if __name__ == '__main__':
+#     uploadAllFiles()
+
+
+
 import requests
 import json
 import os
 
-# Get access token directly from the provided value
-def getToken():
-    return 'ya29.a0AWY7CknIY0CW-fPmmyb6VlbAFNfsMwvQxUdi730Ql_d-8dXTMvS9YvygGkLc8JD8uG6P2uCv4zBKvJFg6xUdcbQ9ht75SfWRDDaCBj-2zLQsSytoTm7txN-JLvOeCLoTRFnS4jkCUsybUekPDp2laYEZEJ-eaCgYKATkSARASFQG1tDrpAIhHZ488E407Hvzjs9b1dQ0163'
+# Fetch a new access token using the refresh token
+def getAccessToken():
+    oauth = 'https://www.googleapis.com/oauth2/v4/token'  # Google API OAuth URL
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    data = {
+        'grant_type': 'refresh_token',
+        'client_id': '152312650973-s0vra8sl1uh2b19gvkickc26nm2ng9lg.apps.googleusercontent.com',
+        'client_secret': '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',
+        'refresh_token': '1//04NaMgLSpxEUeCgYIARAAGAQSNwF-L9Irp-Ym8TTsEGOkqCYhDXtWInx98ntgtDGmMMlxiKHBJ1bHti9_rVKr0hq7sYmjiE8tUgo',  # Replace with your refresh token
+    }
+
+    token = requests.post(oauth, headers=headers, data=data)
+    _key = json.loads(token.text)
+    return _key['access_token']
 
 # Upload a single file to Google Drive using access token
-def uploadFile(file_path):
-    TOKEN_KEY = getToken()
-    headers = {"Authorization": "Bearer " + TOKEN_KEY}
+def uploadFile(file_path, access_token):
+    headers = {"Authorization": "Bearer " + access_token}
     
     file_name = os.path.basename(file_path)
     para = {
@@ -181,16 +237,16 @@ def uploadFile(file_path):
 # Upload only the files with .txt and .pdf extensions from the root directory of the repository
 def uploadAllFiles():
     root_dir = os.getcwd()  # Get the current working directory (root directory of the repository)
+    access_token = getAccessToken()
 
     for file_name in os.listdir(root_dir):
         file_path = os.path.join(root_dir, file_name)
         if os.path.isfile(file_path):
             file_extension = os.path.splitext(file_path)[1]
             if file_extension == ".txt" or file_extension == ".pdf":
-                uploadFile(file_path)
+                uploadFile(file_path, access_token)
 
 if __name__ == '__main__':
     uploadAllFiles()
-
 
 
