@@ -98,7 +98,7 @@ def upload2Drive(file_path):
 
 
 if __name__ == '__main__':
-    file_path = "my-upload-test.pdf"  # Replace with the path to your file
+    file_path = "test.txt"  # Replace with the path to your file
 
     file_extension = os.path.splitext(file_path)[1]
     if file_extension == ".txt" or file_extension == ".pdf":
