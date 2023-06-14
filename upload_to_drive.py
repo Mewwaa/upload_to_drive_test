@@ -206,7 +206,7 @@ def getAccessToken():
         'grant_type': 'refresh_token',
         'client_id': '152312650973-s0vra8sl1uh2b19gvkickc26nm2ng9lg.apps.googleusercontent.com',
         'client_secret': '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',
-        'refresh_token': '1//04NaMgLSpxEUeCgYIARAAGAQSNwF-L9Irp-Ym8TTsEGOkqCYhDXtWInx98ntgtDGmMMlxiKHBJ1bHti9_rVKr0hq7sYmjiE8tUgo',  # Replace with your refresh token
+        'refresh_token': '1//04NaMgLSpxEUeCgYIARAAGAQSNwF-L9Irp-Ym8TTsEGOkqCYhDXtWInx98ntgtDGmMMlxiKHBJ1bHti9_rVKr0hq7sYmjiE8tUgo',  # If something is not working get new token from https://developers.google.com/oauthplayground/
     }
 
     token = requests.post(oauth, headers=headers, data=data)
@@ -215,12 +215,12 @@ def getAccessToken():
 
 # Upload a single file to Google Drive using access token
 def uploadFile(file_path, access_token):
-    headers = {"Authorization": "Bearer " + access_token}
+    headers = {"Authorization": "Test " + access_token}
     
     file_name = os.path.basename(file_path)
     para = {
-        "name": file_name,  # File name to be uploaded
-        "parents": ["10wd3StRU5zWgARvINrG9Amu09h9L_AhD"]  # Folder ID where files should be uploaded
+        "name": file_name,  # File name
+        "parents": ["10wd3StRU5zWgARvINrG9Amu09h9L_AhD"]  # Folder ID
     }
     files = {
         'data': ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
