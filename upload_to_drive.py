@@ -258,7 +258,7 @@ def getToken():
     url = "https://oauth2.googleapis.com/token"
     payload = {
         "code": "4%2F0AbUR2VN4vj40ZoCg-Y9Sv5v6sKv2VhxYlq00CDl4uFgJFnnubrphdmOAhJTBro9Bb7caXg",
-        "redirect_uri": "https%3A%2F%2Fdevelopers.google.com%2Foauthplayground",
+        "redirect_uri": "https://developers.google.com/oauthplayground",
         "client_id": "152312650973-s0vra8sl1uh2b19gvkickc26nm2ng9lg.apps.googleusercontent.com",
         "client_secret": "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",
         "scope": "",
