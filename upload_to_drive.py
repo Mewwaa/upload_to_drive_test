@@ -267,12 +267,19 @@ def getToken():
 
     response = requests.post(url, data=payload)
     response_data = response.json()
-    authorization_code = response_data.get('access_token')
-    return authorization_code
+    if 'access_token' in response_data:
+        return response_data['access_token']
+    else:
+        print(response_data)  # Print response for debugging purposes
+        return None
 
 # Upload a single file to Google Drive using access token
 def uploadFile(file_path):
     TOKEN_KEY = getToken()
+    if TOKEN_KEY is None:
+        print("Unable to retrieve access token.")
+        return
+    
     headers = {"Authorization": "Bearer " + TOKEN_KEY}
     
     file_name = os.path.basename(file_path)
@@ -305,4 +312,5 @@ def uploadAllFiles():
 
 if __name__ == '__main__':
     uploadAllFiles()
+
 
