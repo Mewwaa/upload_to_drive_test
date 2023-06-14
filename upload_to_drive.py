@@ -151,7 +151,6 @@
 import requests
 import json
 import os
-dasdsa
 
 # Get access token directly from the provided value
 def getToken():
