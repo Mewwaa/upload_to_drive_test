@@ -15,6 +15,17 @@ repo_root_url = "https://api.github.com/repos/USERNAME/REPO_NAME/git/trees/main?
 response = requests.get(repo_root_url)
 data = response.json()
 
+# Make a request to the GitHub API
+response = requests.get("https://api.github.com/repos/Mewwaa/upload_to_drive_test/git/trees/main?recursive=1")
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Print the JSON response
+    print(response.json())
+else:
+    print("Request failed with status code:", response.status_code)
+
+
 for item in data["tree"]:
     if item["type"] == "blob" and (item["path"].endswith(".txt") or item["path"].endswith(".pdf")):
         upload_file.append(item["path"])
