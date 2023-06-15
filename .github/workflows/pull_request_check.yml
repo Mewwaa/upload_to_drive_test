@@ -1,48 +1,69 @@
-name: Linter
+name: Check Python files
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+on: [pull_request]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Filter Python Files
-        id: file-filter
-        run: |
-          python_files=$(find . -name "*.py")
-          echo "::set-output name=python_files::$python_files"
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: grantmcconnaughey/lintly-flake8-github-action@v1.0
+        if: github.event_name == 'pull_request'
         with:
-          python-version: 3.x
+          # The GitHub API token to create reviews with
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Fail if "new" violations detected or "any", default "new"
+          failIf: new
+          # Additional arguments to pass to flake8, default "." (current directory)
+          args: "--ignore=E121,E123 ."
 
-      - name: Super-Linter
-        uses: super-linter/super-linter@v5.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_sha: ${{ github.sha }}
-          file_glob: true
-          file_extensions: .py
-          file_ignore: |
-            *.md
-            *.txt
-            *.yml
-            *.json
-            *.pdf
-          display_mode: terminal
-          runner: github
-          annotations: true
+
+
+# name: Linter
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Filter Python Files
+#         id: file-filter
+#         run: |
+#           python_files=$(find . -name "*.py")
+#           echo "::set-output name=python_files::$python_files"
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.x
+
+#       - name: Super-Linter
+#         uses: super-linter/super-linter@v5.0.0
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           commit_sha: ${{ github.sha }}
+#           file_glob: true
+#           file_extensions: .py
+#           file_ignore: |
+#             *.md
+#             *.txt
+#             *.yml
+#             *.json
+#             *.pdf
+#           display_mode: terminal
+#           runner: github
+#           annotations: true
 
 
 
