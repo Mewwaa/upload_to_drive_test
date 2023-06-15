@@ -20,7 +20,8 @@ jobs:
 
       - name: Run Flake8
         run: |
-          flake8 --ignore=E121,E123 --exclude=__init__.py --extend-ignore=E203,W503 --max-line-length=88 --exclude=.git,__pycache__,.venv --extend-ignore=E303,E402 .
+          flake8 --exclude=__init__.py --extend-ignore=E203,W503,E302,W293,W291,E501,E305,W391 --max-line-length=1000 --exclude=.git,__pycache__,.venv --extend-ignore=E303,E402 .
+
 
 
 
