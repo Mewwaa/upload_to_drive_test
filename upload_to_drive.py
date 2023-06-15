@@ -25,6 +25,7 @@ if response_tree.status_code == 200:
         for item in tree_data["tree"]:
             if item["type"] == "blob":
                 upload_file.append(item["path"])
+                print("Files found in here too.")
     else:
         print("No files found in the repository.")
 else:
