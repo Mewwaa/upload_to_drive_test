@@ -151,7 +151,6 @@
 #       with:
 #         github_token: ${{ secrets.GITHUB_TOKEN }}
 #         args: --merge
-
 name: Linter
 
 on:
@@ -167,20 +166,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Filter Python Files
         id: file-filter
         run: |
           python_files=$(find . -name "*.py")
           echo "::set-output name=python_files::$python_files"
-      
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
       - name: Super-Linter
         uses: super-linter/super-linter@v5.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_PYTHON: true
         with:
           files: ${{ steps.file-filter.outputs.python_files }}
+          
+
 
 
 
