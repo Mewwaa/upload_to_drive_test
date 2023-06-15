@@ -3,13 +3,31 @@ import requests
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-gauth = GoogleAuth(settings_file='settings.yml')
+gauth = GoogleAuth()
+
+# Load credentials from JSON file
+gauth.LoadCredentialsFile('credentials.json')
+
+if gauth.credentials is None:
+    # Authenticate if credentials don't exist
+    gauth.LocalWebserverAuth()
+
+elif gauth.access_token_expired:
+    # Refresh the access token if it's expired
+    gauth.Refresh()
+
+else:
+    # Initialize the saved credentials
+    gauth.Authorize()
+
+# Save the current credentials to a file
+gauth.SaveCredentialsFile('credentials.json')
+
 drive = GoogleDrive(gauth)
 
 upload_folder = "/"  # Path to the folder you want to upload
 
 upload_file = []  # List of files to upload
-
 
 url = "https://api.github.com/repos/Mewwaa/upload_to_drive_test/branches/main"
 response = requests.get(url)
@@ -25,7 +43,7 @@ if response_tree.status_code == 200:
         for item in tree_data["tree"]:
             if item["type"] == "blob":
                 upload_file.append(item["path"])
-                print("Files found in here too.")
+                print("Files found here too.")
     else:
         print("No files found in the repository.")
 else:
@@ -41,6 +59,7 @@ for file_path in upload_file:
     gfile.SetContentFile(file_name)
     gfile.Upload()
     os.remove(file_name)
+
 
 
 
