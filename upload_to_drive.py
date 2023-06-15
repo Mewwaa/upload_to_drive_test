@@ -14,7 +14,7 @@ upload_file = []  # List of files to upload
 url = "https://api.github.com/repos/Mewwaa/upload_to_drive_test/branches/main"
 response = requests.get(url)
 data = response.json()
-tree_url = data["commit"]["tree"]["url"]
+tree_url = data["commit"]["commit"]["tree"]["url"]
 print(tree_url)
 response_tree = requests.get(tree_url)
 
