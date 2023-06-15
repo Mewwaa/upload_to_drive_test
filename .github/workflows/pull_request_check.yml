@@ -1,3 +1,51 @@
+name: Linter
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Filter Python Files
+        id: file-filter
+        run: |
+          python_files=$(find . -name "*.py")
+          echo "::set-output name=python_files::$python_files"
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Super-Linter
+        uses: super-linter/super-linter@v5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_sha: ${{ github.sha }}
+          file_glob: true
+          file_extensions: .py
+          file_ignore: |
+            *.md
+            *.txt
+            *.yml
+            *.json
+            *.pdf
+          display_mode: terminal
+          runner: github
+          annotations: true
+
+
+
 # # name: Pull Request Check
 
 
@@ -5,8 +53,7 @@
 # # #   push:
 # # #       branches:
 # # #         - 'ewa/*'
-      
-# #   pull_request:
+       
 # #     types:
 # #       - opened
 # #       - synchronize
@@ -151,37 +198,42 @@
 #       with:
 #         github_token: ${{ secrets.GITHUB_TOKEN }}
 #         args: --merge
+# name: Linter
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Filter Python Files
+#         id: file-filter
+#         run: |
+#           python_files=$(find . -name "*.py")
+#           echo "::set-output name=python_files::$python_files"
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.x
+
+#       - name: Super-Linter
+#         uses: super-linter/super-linter@v5.0.0
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           VALIDATE_PYTHON: true
+#         with:
+#           files: ${{ steps.file-filter.outputs.python_files }}
+          
 
 
-name: Linter
-
-# Controls when the workflow will run
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      
-      - name: Super-Linter
-        uses: super-linter/super-linter@v5.0.0
-        env:
-          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_PYTHON: true
 
 
