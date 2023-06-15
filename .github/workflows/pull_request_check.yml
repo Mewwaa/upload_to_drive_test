@@ -105,7 +105,55 @@
 
 
 
-name: Pylint
+# name: Pylint
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - ewa
+#       - test
+#       - test2
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+      
+#     - name: Set up Python
+#       uses: actions/setup-python@v3
+#       with:
+#         python-version: 3.9
+        
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install pylint
+        
+#     - name: Find Python files
+#       id: find_files
+#       run: |
+#         find . -type f -name '*.py' -not -path './.git/*' -not -path './.github/*' > files.txt
+        
+#     - name: Run Pylint
+#       id: run_pylint
+#       run: |
+#         cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit --output-format=parseable
+#         pylint_exit_code=$?
+#         echo "::set-output name=pylint_exit_code::$pylint_exit_code"
+        
+#     - name: Merge pull request
+#       if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 && github.event.pull_request.base.ref == 'main' }}
+#       uses: repo-sync/pull-request@v2
+#       with:
+#         github_token: ${{ secrets.GITHUB_TOKEN }}
+#         args: --merge
+
+
+name: Linter
 
 on:
   pull_request:
@@ -114,43 +162,18 @@ on:
       - ewa
       - test
       - test2
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: 3.9
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-        
-    - name: Find Python files
-      id: find_files
-      run: |
-        find . -type f -name '*.py' -not -path './.git/*' -not -path './.github/*' > files.txt
-        
-    - name: Run Pylint
-      id: run_pylint
-      run: |
-        cat files.txt | xargs pylint --exit-zero --score=n --load-plugins=pylint_junit --output-format=parseable
-        pylint_exit_code=$?
-        echo "::set-output name=pylint_exit_code::$pylint_exit_code"
-        
-    - name: Merge pull request
-      if: ${{ steps.run_pylint.outputs.pylint_exit_code == 0 && github.event.pull_request.base.ref == 'main' }}
-      uses: repo-sync/pull-request@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        args: --merge
-
-
+      - name: Super-Linter
+        uses: super-linter/super-linter@v5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          VALIDATE_PYTHON: true
 
