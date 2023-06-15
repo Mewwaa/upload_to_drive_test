@@ -7,15 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: grantmcconnaughey/lintly-flake8-github-action@v1.0
-        if: github.event_name == 'pull_request'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          # The GitHub API token to create reviews with
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # Fail if "new" violations detected or "any", default "new"
-          failIf: new
-          # Additional arguments to pass to flake8, default "." (current directory)
-          args: "--ignore=E121,E123 ."
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          pip install markupsafe==1.1.1
+          pip install flake8
+
+      - name: Run Flake8
+        run: flake8 --ignore=E121,E123 .
+
 
 
 
