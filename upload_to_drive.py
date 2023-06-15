@@ -18,17 +18,21 @@ tree_url = data["commit"]["commit"]["tree"]["url"]
 print(tree_url)
 response_tree = requests.get(tree_url)
 
-if ["tree"] in response_tree:
-    print("Weszło!!!!!!!!!!!!!!!!!!!!")
-    for item in data["tree"]:
-        if item in data["tree"]["type"] == "blob":
-            upload_file.append(item in data["tree"]["path"])
+if response_tree.status_code == 200:
+    tree_data = response_tree.json()
+    if "tree" in tree_data:
+        print("Files found in the repository.")
+        for item in tree_data["tree"]:
+            if item["type"] == "blob":
+                upload_file.append(item["path"])
+    else:
+        print("No files found in the repository.")
 else:
-    print("No files found in the repository.")
+    print("Failed to retrieve tree data.")
 
 # Upload files
 for file_path in upload_file:
-    file_url = f"https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/{file_path}"
+    file_url = f"https://raw.githubusercontent.com/Mewwaa/upload_to_drive_test/main/{file_path}"
     r = requests.get(file_url, allow_redirects=True)
     file_name = os.path.basename(file_path)
     open(file_name, 'wb').write(r.content)
@@ -36,6 +40,7 @@ for file_path in upload_file:
     gfile.SetContentFile(file_name)
     gfile.Upload()
     os.remove(file_name)
+
 
 
 
