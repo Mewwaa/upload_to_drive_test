@@ -21,7 +21,7 @@ response_tree = requests.get(tree_url)
 if ["tree"] in response_tree:
     print("Weszło!!!!!!!!!!!!!!!!!!!!")
     for item in data["tree"]:
-        if item in data["tree"]["type"] == "blob"):
+        if item in data["tree"]["type"] == "blob":
             upload_file.append(item in data["tree"]["path"])
 else:
     print("No files found in the repository.")
