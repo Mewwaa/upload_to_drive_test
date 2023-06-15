@@ -15,6 +15,7 @@ class PizzaBuilder:
         return pizza
 
 class Pizza:
+    
     def __init__(self):
         self.crust = None
         self.toppings = []
@@ -48,7 +49,6 @@ class PizzaDeliveryObserver:
     def update(self, pizza):
         print(f"Pizza '{pizza}' is out for delivery!")
 
-
 # Singleton 
 class PizzaDeliveryService:
     _instance = None
@@ -70,11 +70,9 @@ if __name__ == '__main__':
     pizza_builder.add_topping("Mushrooms")
     pizza = pizza_builder.build()
     print(pizza)
-
     pizza_order = PizzaOrder()
     pizza_delivery_observer = PizzaDeliveryObserver()
     pizza_order.attach(pizza_delivery_observer)
     pizza_order.place_order(pizza)
-   
     delivery_service = PizzaDeliveryService.get_instance()
     delivery_service.deliver_pizza(pizza)
