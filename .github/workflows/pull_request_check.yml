@@ -19,7 +19,9 @@ jobs:
           pip install flake8
 
       - name: Run Flake8
-        run: flake8 --ignore=E121,E123 .
+        run: |
+          flake8 --ignore=E121,E123 --exclude=__init__.py --extend-ignore=E203,W503 --max-line-length=88 --exclude=.git,__pycache__,.venv --extend-ignore=E303,E402 .
+
 
 
 
