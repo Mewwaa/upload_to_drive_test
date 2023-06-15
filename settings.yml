@@ -4,7 +4,7 @@ client_config:
   client_secret: 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
 save_credentials: True
 save_credentials_backend: file
-save_credentials_file: ".github/workflows/credentials.json"
+save_credentials_file: "credentials_with_secret.json"
 get_refresh_token: True
 oauth_scope:
   - https://www.googleapis.com/auth/drive
