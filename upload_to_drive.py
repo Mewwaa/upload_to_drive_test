@@ -6,7 +6,7 @@ from pydrive.drive import GoogleDrive
 gauth = GoogleAuth()
 
 # Load credentials from JSON file
-gauth.LoadCredentialsFile('credentials.json')
+gauth.LoadCredentialsFile('credentials_with_secret.json')
 
 if gauth.credentials is None:
     # Authenticate if credentials don't exist
@@ -21,7 +21,7 @@ else:
     gauth.Authorize()
 
 # Save the current credentials to a file
-gauth.SaveCredentialsFile('credentials.json')
+gauth.SaveCredentialsFile('credentials_with_secret.json')
 
 drive = GoogleDrive(gauth)
 
