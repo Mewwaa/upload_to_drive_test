@@ -18,14 +18,11 @@ tree_url = data["commit"]["commit"]["tree"]["url"]
 print(tree_url)
 response_tree = requests.get(tree_url)
 
-
-
-
 if ["tree"] in response_tree:
     print("Weszło!!!!!!!!!!!!!!!!!!!!")
     for item in data["tree"]:
-        if item["type"] == "blob" and (item["path"].endswith(".txt") or item["path"].endswith(".pdf")):
-            upload_file.append(item["path"])
+        if item in data["tree"]["type"] == "blob"):
+            upload_file.append(item in data["tree"]["path"])
 else:
     print("No files found in the repository.")
 
