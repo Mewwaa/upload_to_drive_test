@@ -3,8 +3,7 @@ import requests
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-gauth = GoogleAuth()
-gauth.LoadCredentialsFile('credentials.json', secrets_filename='credentials_with_secret.json')
+gauth = GoogleAuth(settings_file='settings.yml')
 drive = GoogleDrive(gauth)
 
 upload_folder = "/"  # Path to the folder you want to upload
