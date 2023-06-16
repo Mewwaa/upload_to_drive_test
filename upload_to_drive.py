@@ -32,14 +32,15 @@ else:
 # Upload files
 for file_path in upload_file:
     print("weszło w ostatniego fora")
-    file_url = f"https://raw.githubusercontent.com/Mewwaa/upload_to_drive_test/main/{file_path}"
-    r = requests.get(file_url, allow_redirects=True)
-    file_name = os.path.basename(file_path)
-    open(file_name, 'wb').write(r.content)
-    gfile = drive.CreateFile({'parents': [{"id": "10wd3StRU5zWgARvINrG9Amu09h9L_AhD"}]})
-    gfile.SetContentFile(file_name)
-    gfile.Upload()
-    os.remove(file_name)
+    print(file_path)
+    # file_url = f"https://raw.githubusercontent.com/Mewwaa/upload_to_drive_test/main/{file_path}"
+    # r = requests.get(file_url, allow_redirects=True)
+    # file_name = os.path.basename(file_path)
+    # open(file_name, 'wb').write(r.content)
+    # gfile = drive.CreateFile({'parents': [{"id": "10wd3StRU5zWgARvINrG9Amu09h9L_AhD"}]})
+    # gfile.SetContentFile(file_name)
+    # gfile.Upload()
+    # os.remove(file_name)
 
 
 
