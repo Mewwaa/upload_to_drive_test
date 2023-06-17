@@ -17,8 +17,19 @@ credentials = service_account.Credentials.from_service_account_file(
 )
 drive_service = build('drive', 'v3', credentials=credentials)
 
+def check_file_exists(file_name):
+    # Check if a file with the same name already exists in the destination folder
+    query = f"'{DESTINATION_FOLDER_ID}' in parents and name = '{file_name}'"
+    response = drive_service.files().list(q=query, fields='files(id)').execute()
+    files = response.get('files', [])
+    return len(files) > 0
+
 def upload_file(file_path):
     file_name = os.path.basename(file_path)
+
+    if check_file_exists(file_name):
+        print(f'File "{file_name}" already exists in Google Drive. Skipping upload.')
+        return
 
     # Create the metadata for the file
     file_metadata = {
@@ -62,6 +73,72 @@ for file_data in files_data:
         file_extension = os.path.splitext(download_url)[1].lower()
         if file_extension in ['.pdf', '.txt']:
             upload_file(download_url)
+
+
+# import os
+# import io
+# import requests
+# from google.oauth2 import service_account
+# from googleapiclient.discovery import build
+# from googleapiclient.http import MediaIoBaseUpload
+
+# # Set the path to the credentials JSON file for your service account
+# SERVICE_ACCOUNT_FILE = 'service_account_credentials.json'
+
+# # Set the ID of the destination folder in Google Drive
+# DESTINATION_FOLDER_ID = '10wd3StRU5zWgARvINrG9Amu09h9L_AhD'
+
+# # Authenticate and create a Drive service
+# credentials = service_account.Credentials.from_service_account_file(
+#     SERVICE_ACCOUNT_FILE, scopes=['https://www.googleapis.com/auth/drive']
+# )
+# drive_service = build('drive', 'v3', credentials=credentials)
+
+# def upload_file(file_path):
+#     file_name = os.path.basename(file_path)
+
+#     # Create the metadata for the file
+#     file_metadata = {
+#         'name': file_name,
+#         'parents': [DESTINATION_FOLDER_ID]
+#     }
+
+#     # Download the file from GitHub
+#     file_content = requests.get(file_path).content
+
+#     # Create an IO buffer and write the downloaded file content to it
+#     file_buffer = io.BytesIO(file_content)
+
+#     # Create a media object for the file upload
+#     media = MediaIoBaseUpload(file_buffer, mimetype='application/octet-stream')
+
+#     # Upload the file to Google Drive
+#     file = drive_service.files().create(
+#         body=file_metadata,
+#         media_body=media,
+#         fields='id'
+#     ).execute()
+
+#     print(f'File "{file_name}" uploaded. File ID: {file["id"]}')
+
+# # GitHub repository details
+# github_username = 'Mewwaa'
+# github_repository = 'upload_to_drive_test'
+
+# # API endpoint to retrieve repository contents
+# api_url = f'https://api.github.com/repos/{github_username}/{github_repository}/contents'
+
+# # Retrieve the list of files from the GitHub repository
+# response = requests.get(api_url)
+# files_data = response.json()
+
+# # Upload each file (PDF or TXT) to Google Drive
+# for file_data in files_data:
+#     download_url = file_data.get('download_url')
+#     if download_url:
+#         file_extension = os.path.splitext(download_url)[1].lower()
+#         if file_extension in ['.pdf', '.txt']:
+#             upload_file(download_url)
 
 
 
