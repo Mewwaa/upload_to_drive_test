@@ -6,7 +6,7 @@ from pydrive.drive import GoogleDrive
 
 # Authenticate using a service account
 gauth = GoogleAuth()
-gauth.ServiceAuth(settings_file="service_account_credentials.json")
+gauth.ServiceAuth()
 drive = GoogleDrive(gauth)
 
 upload_folder = "/"  # Path to the folder you want to upload
