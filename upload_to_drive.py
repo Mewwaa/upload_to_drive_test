@@ -55,6 +55,7 @@
 
 import os
 import requests
+import time
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
@@ -103,8 +104,7 @@ for file_path in upload_file:
     print("przeszło za SetContentFile")
     gfile.Upload()
     print("przeszło za Upload")
-    os.remove(file_name)
-
+    # os.remove(file_name)
 
 
 
