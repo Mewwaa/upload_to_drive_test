@@ -22,8 +22,10 @@ if response_tree.status_code == 200:
         print("Files found in the repository.")
         for item in tree_data["tree"]:
             if item["type"] == "blob":
-                upload_file.append(item["path"])
-                print("Files found in here too.")
+                file_path = item["path"]
+                if file_path.endswith(('.pdf', '.txt')):
+                    upload_file.append(file_path)
+                    print("Files found here too.")
     else:
         print("No files found in the repository.")
 else:
@@ -31,16 +33,69 @@ else:
 
 # Upload files
 for file_path in upload_file:
-    print("weszło w ostatniego fora")
-    print(file_path)
-    # file_url = f"https://raw.githubusercontent.com/Mewwaa/upload_to_drive_test/main/{file_path}"
-    # r = requests.get(file_url, allow_redirects=True)
-    # file_name = os.path.basename(file_path)
-    # open(file_name, 'wb').write(r.content)
-    # gfile = drive.CreateFile({'parents': [{"id": "10wd3StRU5zWgARvINrG9Amu09h9L_AhD"}]})
-    # gfile.SetContentFile(file_name)
-    # gfile.Upload()
-    # os.remove(file_name)
+    file_name = os.path.basename(file_path)
+    file_id = None
+
+    # Search for existing file in the upload folder
+    file_list = drive.ListFile({'q': f"'10wd3StRU5zWgARvINrG9Amu09h9L_AhD' in parents and trashed=false"}).GetList()
+    for file in file_list:
+        if file['title'] == file_name:
+            file_id = file['id']
+            break
+
+    # Create a copy of the file if it doesn't exist in the folder
+    if not file_id:
+        new_file = drive.CreateFile({'title': file_name, 'parents': [{'id': '10wd3StRU5zWgARvINrG9Amu09h9L_AhD'}]})
+        new_file.SetContentFile(file_path)
+        new_file.Upload()
+        print(f"Uploaded file: {file_name}")
+    else:
+        print(f"File already exists: {file_name}")
+
+
+# import os
+# import requests
+# from pydrive.auth import GoogleAuth
+# from pydrive.drive import GoogleDrive
+
+# gauth = GoogleAuth(settings_file='settings.yml')
+# drive = GoogleDrive(gauth)
+
+# upload_folder = "/"  # Path to the folder you want to upload
+# upload_file = []  # List of files to upload
+
+# url = "https://api.github.com/repos/Mewwaa/upload_to_drive_test/branches/main"
+# response = requests.get(url)
+# data = response.json()
+# tree_url = data["commit"]["commit"]["tree"]["url"]
+# print(tree_url)
+# response_tree = requests.get(tree_url)
+
+# if response_tree.status_code == 200:
+#     tree_data = response_tree.json()
+#     if "tree" in tree_data:
+#         print("Files found in the repository.")
+#         for item in tree_data["tree"]:
+#             if item["type"] == "blob":
+#                 upload_file.append(item["path"])
+#                 print("Files found in here too.")
+#     else:
+#         print("No files found in the repository.")
+# else:
+#     print("Failed to retrieve tree data.")
+
+# # Upload files
+# for file_path in upload_file:
+#     print("weszło w ostatniego fora")
+#     print(file_path)
+#     # file_url = f"https://raw.githubusercontent.com/Mewwaa/upload_to_drive_test/main/{file_path}"
+#     # r = requests.get(file_url, allow_redirects=True)
+#     # file_name = os.path.basename(file_path)
+#     # open(file_name, 'wb').write(r.content)
+#     # gfile = drive.CreateFile({'parents': [{"id": "10wd3StRU5zWgARvINrG9Amu09h9L_AhD"}]})
+#     # gfile.SetContentFile(file_name)
+#     # gfile.Upload()
+#     # os.remove(file_name)
 
 
 
