@@ -58,7 +58,7 @@ import requests
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-gauth = GoogleAuth(settings_file='settings.yml')
+gauth = GoogleAuth()
 drive = GoogleDrive(gauth)
 
 upload_folder = "/"  # Path to the folder you want to upload
