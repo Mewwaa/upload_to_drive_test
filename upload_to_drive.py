@@ -103,8 +103,13 @@ for file_path in upload_file:
     print("przeszło za SetContentFile")
     gfile.Upload()
     print("przeszło za Upload")
-    os.remove(file_name)
-
+    while True:
+        try:
+            os.remove(file_name)
+            break
+        except PermissionError:
+            print("File is still in use. Retrying after 1 second...")
+            time.sleep(1)
 
 
 
