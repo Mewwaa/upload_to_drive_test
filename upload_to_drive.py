@@ -17,19 +17,8 @@ credentials = service_account.Credentials.from_service_account_file(
 )
 drive_service = build('drive', 'v3', credentials=credentials)
 
-def check_file_exists(file_name):
-    # Check if a file with the same name already exists in the destination folder
-    query = f"'{DESTINATION_FOLDER_ID}' in parents and name = '{file_name}'"
-    response = drive_service.files().list(q=query, fields='files(id)').execute()
-    files = response.get('files', [])
-    return len(files) > 0
-
 def upload_file(file_path):
     file_name = os.path.basename(file_path)
-
-    if check_file_exists(file_name):
-        print(f'File "{file_name}" already exists in Google Drive. Skipping upload.')
-        return
 
     # Create the metadata for the file
     file_metadata = {
