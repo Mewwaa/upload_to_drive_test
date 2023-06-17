@@ -77,12 +77,15 @@ if response_tree.status_code == 200:
         print("Files found in the repository.")
         for item in tree_data["tree"]:
             if item["type"] == "blob":
-                upload_file.append(item["path"])
-                print("Files found in here too.")
+                file_path = item["path"]
+                if file_path.endswith(".txt") or file_path.endswith(".pdf"):
+                    upload_file.append(file_path)
+                    print("Files found in here too.")
     else:
         print("No files found in the repository.")
 else:
     print("Failed to retrieve tree data.")
+
 
 # Upload files
 for file_path in upload_file:
